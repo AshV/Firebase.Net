@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firebase.Net", "Firebase.Net\Firebase.Net.csproj", "{A1C04D44-1FDB-4E36-9367-193EBE4D091A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unirest-net", "unirest-net\unirest-net.csproj", "{96A222B6-40DB-4A50-B304-06AF9A17AD1C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{E3F5A28C-7073-40B6-9AE4-0C72F7E7E647}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{A1C04D44-1FDB-4E36-9367-193EBE4D091A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1C04D44-1FDB-4E36-9367-193EBE4D091A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1C04D44-1FDB-4E36-9367-193EBE4D091A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96A222B6-40DB-4A50-B304-06AF9A17AD1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96A222B6-40DB-4A50-B304-06AF9A17AD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96A222B6-40DB-4A50-B304-06AF9A17AD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96A222B6-40DB-4A50-B304-06AF9A17AD1C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3F5A28C-7073-40B6-9AE4-0C72F7E7E647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3F5A28C-7073-40B6-9AE4-0C72F7E7E647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3F5A28C-7073-40B6-9AE4-0C72F7E7E647}.Release|Any CPU.ActiveCfg = Release|Any CPU
