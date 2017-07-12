@@ -32,15 +32,18 @@ namespace Firebase.Net
         public string Get()
         {
             var client = new HttpClient();
-            var msg = new HttpRequestMessage(HttpMethod.Get,RootNode);
-            client.SendAsync(msg);
-                return "";
+            var stringTask = client.GetStringAsync(RootNode+"/.json");
+            stringTask.Wait();
+            return stringTask.Result;
         }
 
-        //public FirebaseResponse Put(string JSONData)
-        //{
-        //    return new FirebaseResponse();
-        //}
+        public void Put(string JSONData)
+        {
+            var client = new HttpClient();
+            var stringTask = client.PutAsync(RootNode, new StringContent(JSONData));
+            stringTask.Wait();
+         var r=   stringTask.Result;
+        }
 
         //public FirebaseResponse Post()
         //{
