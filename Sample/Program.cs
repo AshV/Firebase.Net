@@ -11,31 +11,14 @@ namespace Sample
         static void Main(string[] args)
         {
        //     new FirebaseRequest().RQuest();
-            Firebase.Net.FirebaseDB fDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com//");
+            Firebase.Net.FirebaseDB fDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com");
 
-            Console.WriteLine(fDB.Node("firstName").Get());
+         //   Console.WriteLine(fDB.Node("firstName").Get());
 
-            var put = @" {
-                'Team-Awesome': {
-                    'Members': {
-                        'M1': {
-                            'City': 'Hyderabad',
-        'Name': 'Ashish'
-                        },
-      'M2': {
-                            'City': 'Cyberabad',
-        'Name': 'Vivek'
-      },
-      'M3': {
-                            'City': 'Secunderabad',
-        'Name': 'Pradeep'
-      }
-                    }
-                }
-            }";
+            var put = "{\"Team-Awesome\":{\"Members\":{\"M1\":{\"City\":\"Hyderabad\",\"Name\":\"Ashish\"},\"M2\":{\"City\":\"Cyberabad\",\"Name\":\"Vivek\"},\"M3\":{\"City\":\"Secunderabad\",\"Name\":\"Pradeep\"}}}}";
 
-            fDB.Put(put);
-
+              fDB.Post(put);
+            fDB.Delete();
 
 
             Console.WriteLine(fDB.Node("AB").Node("DC"));

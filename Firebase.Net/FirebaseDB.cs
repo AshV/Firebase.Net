@@ -9,6 +9,7 @@ namespace Firebase.Net
 {
     public class FirebaseDB
     {
+        private string JSON_SUFFIX="/.json";
         private string RootNode { get; set; }
         public FirebaseDB(string baseURL)
         {
@@ -32,32 +33,55 @@ namespace Firebase.Net
         public string Get()
         {
             var client = new HttpClient();
-            var stringTask = client.GetStringAsync(RootNode+"/.json");
+            var stringTask = client.GetStringAsync(RootNode + JSON_SUFFIX);
             stringTask.Wait();
             return stringTask.Result;
         }
 
-        public void Put(string JSONData)
+        public (bool Success, HttpResponseMessage ResponseMessage) Put(string JSONData)
         {
             var client = new HttpClient();
-            var stringTask = client.PutAsync(RootNode, new StringContent(JSONData));
+            var stringTask = client.PutAsync(
+                RootNode + JSON_SUFFIX,
+                new StringContent(
+                    JSONData,
+                    UnicodeEncoding.UTF8,
+                    "application/json"));
             stringTask.Wait();
-         var r=   stringTask.Result;
+            HttpResponseMessage r = stringTask.Result;
+            return (r.IsSuccessStatusCode, r);
+
         }
 
-        //public FirebaseResponse Post()
-        //{
-        //    return new FirebaseResponse();
-        //}
+        public (bool Success, HttpResponseMessage ResponseMessage) Post(string JSONData)
+        {
+            var client = new HttpClient();
+            var stringTask = client.PostAsync(
+                RootNode + JSON_SUFFIX,
+                new StringContent(
+                    JSONData,
+                    UnicodeEncoding.UTF8,
+                    "application/json"));
+            stringTask.Wait();
+            HttpResponseMessage r = stringTask.Result;
+            return (r.IsSuccessStatusCode, r);
+        }
 
-        //public FirebaseResponse Patch()
-        //{
-        //    return new FirebaseResponse();
-        //}
+        public void Patch()
+        {
+            var client = new HttpClient();
+            var msg = new HttpRequestMessage(new HttpMethod("PATCH"), RootNode + JSON_SUFFIX);
+            var patch = client.SendAsync(msg);
+        }
 
-        //public FirebaseResponse Delete()
-        //{
-        //    return new FirebaseResponse();
-        //}
+        public (bool Success, HttpResponseMessage ResponseMessage) Delete()
+        {
+            var client = new HttpClient();
+            var del = client.DeleteAsync(RootNode + JSON_SUFFIX);
+            del.Wait();
+            HttpResponseMessage r = del.Result;
+            return (r.IsSuccessStatusCode, r);
+
+        }
     }
 }
