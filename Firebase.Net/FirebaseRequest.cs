@@ -9,6 +9,26 @@ namespace Firebase.Net
 {
     public class FirebaseRequest
     {
+        private const string JSON_SUFFIX = "/.json";
+        public HttpMethod method { get; set; }
+        public string  JSON { get; set; }
+
+        public Uri uri { get; set; }
+
+        public FirebaseRequest(HttpMethod method,string uri,string JSON=null)
+        {
+            this.method = method;
+            this.JSON = JSON;
+            // Validation to be added
+            this.uri = new Uri(uri+JSON_SUFFIX);
+        }
+
+
+
+
+
+
+
         public void RQuest()
         {
             var respTask = PutRequestHelper(HttpMethod.Put, "https://c-sharpcorner-2d7ae.firebaseio.com/.json");

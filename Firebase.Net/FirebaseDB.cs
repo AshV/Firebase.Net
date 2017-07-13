@@ -9,7 +9,7 @@ namespace Firebase.Net
 {
     public class FirebaseDB
     {
-        private string JSON_SUFFIX="/.json";
+        private const string JSON_SUFFIX = "/.json";
         private string RootNode { get; set; }
         public FirebaseDB(string baseURL)
         {
@@ -37,8 +37,18 @@ namespace Firebase.Net
             stringTask.Wait();
             return stringTask.Result;
         }
+        public string GetWithHelper()
+        {
+            var a = HttpClientHelper.RequestHelper(new FirebaseRequest(HttpMethod.Get, RootNode));
+            a.Wait();
+            var c = a.Result;
+            var content = c.Content.ReadAsStringAsync();
+            content.Wait();
 
-        public (bool Success, HttpResponseMessage ResponseMessage) Put(string JSONData)
+            return content.Result;
+        }
+
+        public Tuple<bool, HttpResponseMessage> Put(string JSONData)
         {
             var client = new HttpClient();
             var stringTask = client.PutAsync(
@@ -49,11 +59,11 @@ namespace Firebase.Net
                     "application/json"));
             stringTask.Wait();
             HttpResponseMessage r = stringTask.Result;
-            return (r.IsSuccessStatusCode, r);
+            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
 
         }
 
-        public (bool Success, HttpResponseMessage ResponseMessage) Post(string JSONData)
+        public Tuple<bool, HttpResponseMessage> Post(string JSONData)
         {
             var client = new HttpClient();
             var stringTask = client.PostAsync(
@@ -62,26 +72,31 @@ namespace Firebase.Net
                     JSONData,
                     UnicodeEncoding.UTF8,
                     "application/json"));
-            stringTask.Wait();
+        stringTask.Wait();
             HttpResponseMessage r = stringTask.Result;
-            return (r.IsSuccessStatusCode, r);
+            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
         }
 
-        public void Patch()
+        public Tuple<bool, HttpResponseMessage> Patch()
         {
             var client = new HttpClient();
             var msg = new HttpRequestMessage(new HttpMethod("PATCH"), RootNode + JSON_SUFFIX);
-            var patch = client.SendAsync(msg);
+            var stringTask = client.SendAsync(msg);
+            stringTask.Wait();
+            HttpResponseMessage r = stringTask.Result;
+            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
         }
 
-        public (bool Success, HttpResponseMessage ResponseMessage) Delete()
+        public Tuple<bool, HttpResponseMessage> Delete()
         {
             var client = new HttpClient();
             var del = client.DeleteAsync(RootNode + JSON_SUFFIX);
             del.Wait();
             HttpResponseMessage r = del.Result;
-            return (r.IsSuccessStatusCode, r);
+            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
 
         }
+
+      
     }
 }
