@@ -37,7 +37,7 @@ namespace Firebase.Net
             stringTask.Wait();
             return stringTask.Result;
         }
-        public string GetWithHelper()
+        public Tuple<string, string> GetWithHelper()
         {
             var a = HttpClientHelper.RequestHelper(new FirebaseRequest(HttpMethod.Get, RootNode));
             a.Wait();
@@ -45,58 +45,65 @@ namespace Firebase.Net
             var content = c.Content.ReadAsStringAsync();
             content.Wait();
 
-            return content.Result;
+            return new Tuple<string, string>("", "");
         }
 
-        public Tuple<bool, HttpResponseMessage> Put(string JSONData)
+        public FirebaseResponse Put(string JSONData)
         {
-            var client = new HttpClient();
-            var stringTask = client.PutAsync(
-                RootNode + JSON_SUFFIX,
-                new StringContent(
-                    JSONData,
-                    UnicodeEncoding.UTF8,
-                    "application/json"));
-            stringTask.Wait();
-            HttpResponseMessage r = stringTask.Result;
-            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
+            return new FirebaseRequest(HttpMethod.Put, RootNode, JSONData).Execute();
+
+            //var client = new HttpClient();
+            //var stringTask = client.PutAsync(
+            //    RootNode + JSON_SUFFIX,
+            //    new StringContent(
+            //        JSONData,
+            //        UnicodeEncoding.UTF8,
+            //        "application/json"));
+            //stringTask.Wait();
+            //HttpResponseMessage r = stringTask.Result;
+            //return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
 
         }
 
-        public Tuple<bool, HttpResponseMessage> Post(string JSONData)
+        public FirebaseResponse Post(string JSONData)
         {
-            var client = new HttpClient();
-            var stringTask = client.PostAsync(
-                RootNode + JSON_SUFFIX,
-                new StringContent(
-                    JSONData,
-                    UnicodeEncoding.UTF8,
-                    "application/json"));
-        stringTask.Wait();
-            HttpResponseMessage r = stringTask.Result;
-            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
+            return new FirebaseRequest(HttpMethod.Post, RootNode, JSONData).Execute();
+
+            //    var client = new HttpClient();
+            //    var stringTask = client.PostAsync(
+            //        RootNode + JSON_SUFFIX,
+            //        new StringContent(
+            //            JSONData,
+            //            UnicodeEncoding.UTF8,
+            //            "application/json"));
+            //stringTask.Wait();
+            //    HttpResponseMessage r = stringTask.Result;
+            //    return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
         }
 
-        public Tuple<bool, HttpResponseMessage> Patch()
+        public FirebaseResponse Patch(string JSONData)
         {
-            var client = new HttpClient();
-            var msg = new HttpRequestMessage(new HttpMethod("PATCH"), RootNode + JSON_SUFFIX);
-            var stringTask = client.SendAsync(msg);
-            stringTask.Wait();
-            HttpResponseMessage r = stringTask.Result;
-            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
+            return new FirebaseRequest(new HttpMethod("PATCH"), RootNode, JSONData).Execute();
+
+            //var client = new HttpClient();
+            //var msg = new HttpRequestMessage(new HttpMethod("PATCH"), RootNode + JSON_SUFFIX);
+            //var stringTask = client.SendAsync(msg);
+            //stringTask.Wait();
+            //HttpResponseMessage r = stringTask.Result;
+            //return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
         }
 
-        public Tuple<bool, HttpResponseMessage> Delete()
+        public FirebaseResponse Delete()
         {
-            var client = new HttpClient();
-            var del = client.DeleteAsync(RootNode + JSON_SUFFIX);
-            del.Wait();
-            HttpResponseMessage r = del.Result;
-            return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
+            return new FirebaseRequest(new HttpMethod("PATCH"), RootNode).Execute();
+            //var client = new HttpClient();
+            //var del = client.DeleteAsync(RootNode + JSON_SUFFIX);
+            //del.Wait();
+            //HttpResponseMessage r = del.Result;
+            //return new Tuple<bool, HttpResponseMessage>(r.IsSuccessStatusCode, r);
 
         }
 
-      
+
     }
 }

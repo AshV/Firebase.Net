@@ -11,7 +11,7 @@ namespace Sample
         static void Main(string[] args)
         {
        //     new FirebaseRequest().RQuest();
-            Firebase.Net.FirebaseDB fDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com");
+           FirebaseDB fDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com");
 
          Console.WriteLine(fDB.GetWithHelper());
 
