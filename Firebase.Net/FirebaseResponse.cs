@@ -14,6 +14,17 @@ namespace Firebase.Net
         public string ErrorMessage { get; set; }
         public HttpResponseMessage HttpResponse { get; set; }
 
-        public FirebaseResponse() { }
+        public FirebaseResponse()
+        {
+
+        }
+
+        public FirebaseResponse(bool Success, string ErrorMessage, HttpResponseMessage HttpResponse = null, string JSONContent = null)
+        {
+            this.Success = Success;
+            this.JSONContent = JSONContent;
+            this.ErrorMessage = ErrorMessage;
+            this.HttpResponse = HttpResponse;
+        }
     }
 }

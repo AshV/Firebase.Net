@@ -10,15 +10,15 @@ namespace Firebase.Net
     public class HttpClientHelper
     {
         private const string USER_AGENT = "firebase-net/1.0";
-        public static Task<HttpResponseMessage> RequestHelper(FirebaseRequest request)
+        public static Task<HttpResponseMessage> RequestHelper(HttpMethod method, Uri uri, string JSON = null)
         {
             var client = new HttpClient();
-            var msg = new HttpRequestMessage(request.method, request.uri);
+            var msg = new HttpRequestMessage(method, uri);
             msg.Headers.Add("user-agent", USER_AGENT);
-            if (request.JSON != null)
+            if (JSON != null)
             {
                 msg.Content = new StringContent(
-                    request.JSON,
+                    JSON,
                     UnicodeEncoding.UTF8,
                     "application/json");
             }

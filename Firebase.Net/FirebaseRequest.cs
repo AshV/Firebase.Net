@@ -9,22 +9,69 @@ namespace Firebase.Net
 {
     public class FirebaseRequest
     {
-        private const string JSON_SUFFIX = "/.json";
-        public HttpMethod method { get; set; }
-        public string  JSON { get; set; }
+        private const string JSON_SUFFIX = ".json";
+        private HttpMethod method { get; set; }
+        private string JSON { get; set; }
+        private string uri { get; set; }
 
-        public Uri uri { get; set; }
-
-        public FirebaseRequest(HttpMethod method,string uri,string JSON=null)
+        public FirebaseRequest(HttpMethod method, string uri, string JSON = null)
         {
             this.method = method;
             this.JSON = JSON;
-            // Validation to be added
-            this.uri = new Uri(uri+JSON_SUFFIX);
+            if (uri.Replace("/", "").EndsWith("firebaseio.com"))
+                this.uri = uri + '/' + JSON_SUFFIX;
+            else
+                this.uri = uri + JSON_SUFFIX;
         }
 
+        public FirebaseResponse Execute()
+        {
+            Uri requestURI;
+            if (ValidateURI(uri))
+                requestURI = new Uri(uri);
+            else
+                return new FirebaseResponse(false, "The url passed to the HttpMethod constructor is not a valid HTTP/S URL");
 
+            var response = HttpClientHelper.RequestHelper(method, requestURI, JSON);
+            response.Wait();
+            var result = response.Result;
 
+            var firebaseResponse = new FirebaseResponse()
+            {
+                HttpResponse = result,
+                ErrorMessage = result.StatusCode.ToString() + " : " + result.ReasonPhrase,
+                Success = response.Result.IsSuccessStatusCode
+            };
+
+            if (method == HttpMethod.Get)
+            {
+                var content = result.Content.ReadAsStringAsync();
+                content.Wait();
+                firebaseResponse.JSONContent = content.Result;
+            }
+
+            return firebaseResponse;
+        }
+
+        private bool ValidateURI(string url)
+        {
+            Uri locurl;
+            if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out locurl))
+            {
+                if (
+                    !(locurl.IsAbsoluteUri &&
+                      (locurl.Scheme == "http" || locurl.Scheme == "https")) ||
+                    !locurl.IsAbsoluteUri)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
 
 
 
@@ -84,10 +131,10 @@ namespace Firebase.Net
         {
             var client = new HttpClient();
 
-           StringContent stringContent = new StringContent(
-        "{ \"firstName\": \"John\" }",
-        UnicodeEncoding.UTF8,
-        "application/json");
+            StringContent stringContent = new StringContent(
+         "{ \"firstName\": \"John\" }",
+         UnicodeEncoding.UTF8,
+         "application/json");
 
             return client.PutAsync(url, stringContent);
         }
