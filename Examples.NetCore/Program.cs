@@ -10,7 +10,7 @@ namespace Examples.NetCore
     using static System.Console;
 
     /// <summary>
-    /// Exmples
+    /// Examples
     /// </summary>
     public class Program
     {
@@ -47,6 +47,7 @@ namespace Examples.NetCore
             WriteLine("GET Request");
             FirebaseResponse getResponse = firebaseDBTeams.Get();
             WriteLine(getResponse.Success);
+            if(getResponse.Success)
             WriteLine(getResponse.JSONContent);
             WriteLine();
 

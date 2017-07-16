@@ -90,7 +90,7 @@ namespace FirebaseNet.Database
                 Success = response.Result.IsSuccessStatusCode
             };
 
-            if (this.Method == HttpMethod.Get)
+            if (this.Method.Equals(HttpMethod.Get))
             {
                 var content = result.Content.ReadAsStringAsync();
                 content.Wait();
