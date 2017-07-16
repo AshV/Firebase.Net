@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Firebase.Net
 {
@@ -30,7 +31,13 @@ namespace Firebase.Net
             if (ValidateURI(uri))
                 requestURI = new Uri(uri);
             else
-                return new FirebaseResponse(false, "The url passed to the HttpMethod constructor is not a valid HTTP/S URL");
+                return new FirebaseResponse(false, "Proided Firebase path is not a valid HTTP/S URL");
+
+            string json;
+            if (!TryParseJSON(JSON, out json))
+            {
+                return new FirebaseResponse(false, string.Format("Invalid JSON : {0}", json));
+            }
 
             var response = HttpClientHelper.RequestHelper(method, requestURI, JSON);
             response.Wait();
@@ -72,6 +79,38 @@ namespace Firebase.Net
             }
             return true;
         }
+
+        private bool TryParseJSON(string inJSON, out string output)
+        {
+            try
+            {
+                JToken ParsedJSON = JToken.Parse(inJSON);
+                output = ParsedJSON.ToString();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                output = ex.Message;
+                return false;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
