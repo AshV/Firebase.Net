@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FirebaseRequest.cs" company="Sprocket Enterprises">
+// <copyright file="FirebaseRequest.cs" company="AshishVishwakarma.com">
 // Github/AshV
 // </copyright>
 // <author>Ashish Vishwakarma</author>
@@ -78,13 +78,16 @@ namespace FirebaseNet.Database
                 return new FirebaseResponse(false, "Proided Firebase path is not a valid HTTP/S URL");
             }
 
-            string json;
-            if (!this.TryParseJSON(this.JSON, out json))
+            string json = null;
+            if (this.JSON != null)
             {
-                return new FirebaseResponse(false, string.Format("Invalid JSON : {0}", json));
+                if (!this.TryParseJSON(this.JSON, Method, out json))
+                {
+                    return new FirebaseResponse(false, string.Format("Invalid JSON : {0}", json));
+                }
             }
 
-            var response = this.RequestHelper(this.Method, requestURI, this.JSON);
+            var response = this.RequestHelper(this.Method, requestURI, json);
             response.Wait();
             var result = response.Result;
 
@@ -137,7 +140,7 @@ namespace FirebaseNet.Database
         /// <param name="inJSON">JSON to be validatedd</param>
         /// <param name="output">Valid JSON or Error Message</param>
         /// <returns>True if valid</returns>
-        private bool TryParseJSON(string inJSON, out string output)
+        private bool TryParseJSON(string inJSON, HttpMethod method, out string output)
         {
             try
             {
@@ -147,6 +150,12 @@ namespace FirebaseNet.Database
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("Expected ':'") && method.Equals(new HttpMethod("PATCH")))
+                {
+                    output = inJSON;
+                    return true;
+                }
+
                 output = ex.Message;
                 return false;
             }

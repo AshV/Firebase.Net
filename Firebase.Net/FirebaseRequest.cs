@@ -33,11 +33,11 @@ namespace Firebase.Net
             else
                 return new FirebaseResponse(false, "Proided Firebase path is not a valid HTTP/S URL");
 
-            string json;
-            if (!TryParseJSON(JSON, out json))
-            {
-                return new FirebaseResponse(false, string.Format("Invalid JSON : {0}", json));
-            }
+            //string json;
+            //if (!TryParseJSON(JSON, out json))
+            //{
+            //    return new FirebaseResponse(false, string.Format("Invalid JSON : {0}", json));
+            //}
 
             var response = HttpClientHelper.RequestHelper(method, requestURI, JSON);
             response.Wait();

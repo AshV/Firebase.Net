@@ -10,7 +10,7 @@ namespace Sample
         {
             FirebaseDB DB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com");
 
-            var data = "{{\"Tea.m-Awesome\":{\"Members\":{\"M1\":{\"City\":\"Hyderabad\",\"Name\":\"Ashish\"},\"M2\":{\"City\":\"Cyberabad\",\"Name\":\"Vivek\"},\"M3\":{\"City\":\"Secunderabad\",\"Name\":\"Pradeep\"}}}}";
+            var data = "{\"Team-Awesome\":{\"Members\":{\"M1\":{\"City\":\"Hyderabad\",\"Name\":\"Ashish\"},\"M2\":{\"City\":\"Cyberabad\",\"Name\":\"Vivek\"},\"M3\":{\"City\":\"Secunderabad\",\"Name\":\"Pradeep\"}}}}";
 
             var dt = @"{
   'Team-Awesome': {

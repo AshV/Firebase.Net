@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FirebaseResponse.cs" company="Sprocket Enterprises">
+// <copyright file="FirebaseResponse.cs" company="AshishVishwakarma.com">
 // Github/AshV
 // </copyright>
 // <author>Ashish Vishwakarma</author>
