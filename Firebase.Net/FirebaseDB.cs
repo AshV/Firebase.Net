@@ -14,7 +14,7 @@ namespace Firebase.Net
         public FirebaseDB Node(string node)
         {
             if (node.Contains("/"))
-                throw new FormatException("Node must not contain '/' use NodePath instead.");
+                throw new FormatException("Node must not contain '/', use NodePath instead.");
             return new FirebaseDB(RootNode + '/' + node);
         }
 
