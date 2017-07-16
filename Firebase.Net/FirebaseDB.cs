@@ -6,6 +6,7 @@ namespace Firebase.Net
     public class FirebaseDB
     {
         private string RootNode { get; set; }
+
         public FirebaseDB(string baseURL)
         {
             RootNode = baseURL;
@@ -21,11 +22,6 @@ namespace Firebase.Net
         public FirebaseDB NodePath(string nodePath)
         {
             return new FirebaseDB(RootNode + '/' + nodePath);
-        }
-
-        public override string ToString()
-        {
-            return RootNode;
         }
 
         public FirebaseResponse Get()
@@ -53,6 +49,9 @@ namespace Firebase.Net
             return new FirebaseRequest(HttpMethod.Delete, RootNode).Execute();
         }
 
-
+        public override string ToString()
+        {
+            return RootNode;
+        }
     }
 }
