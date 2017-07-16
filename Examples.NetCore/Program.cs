@@ -19,8 +19,10 @@ namespace Examples.NetCore
         /// </summary>
         public static void Main()
         {
+            // Instanciating with base URL
             FirebaseDB firebaseDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com");
 
+            // Referring to Node with name "Teams"
             FirebaseDB firebaseDBTeams = firebaseDB.Node("Teams");
 
             var data = @"{
@@ -60,6 +62,7 @@ namespace Examples.NetCore
 
             WriteLine("PATCH Request");
             FirebaseResponse patchResponse = firebaseDBTeams
+                // Use of NodePath to refer path lnager than a single Node
                 .NodePath("Team-Awesome/Members/M1")
                 .Patch("{\"Designation\":\"CRM Consultant\"}");
             WriteLine(patchResponse.Success);
