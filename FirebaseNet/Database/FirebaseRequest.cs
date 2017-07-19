@@ -67,7 +67,7 @@ namespace FirebaseNet.Database
             }
             else
             {
-                return new FirebaseResponse(false, "Proided Firebase path is not a valid HTTP/S URL");
+                return new FirebaseResponse(false, "Provided Firebase path is not a valid HTTP/S URL");
             }
 
             string json = null;
