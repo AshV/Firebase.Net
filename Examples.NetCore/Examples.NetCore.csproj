@@ -9,4 +9,10 @@
     <ProjectReference Include="..\FirebaseNet\FirebaseNet.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Key.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

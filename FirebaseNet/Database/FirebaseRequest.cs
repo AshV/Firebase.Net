@@ -6,7 +6,9 @@
 //-----------------------------------------------------------------------
 namespace FirebaseNet.Database
 {
+    using FirebaseNet.Auth;
     using System;
+    using System.Net;
     using System.Net.Http;
 
     /// <summary>
@@ -82,6 +84,14 @@ namespace FirebaseNet.Database
             var response = UtilityHelper.RequestHelper(this.Method, requestURI, json);
             response.Wait();
             var result = response.Result;
+
+            if (!result.IsSuccessStatusCode && result.StatusCode.Equals(HttpStatusCode.Unauthorized))
+            {
+                AuthHelper.RefreshToken();
+                response = UtilityHelper.RequestHelper(this.Method, requestURI, json);
+                response.Wait();
+                result = response.Result;
+            }
 
             var firebaseResponse = new FirebaseResponse()
             {

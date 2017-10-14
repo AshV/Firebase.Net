@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------
 namespace FirebaseNet.Database
 {
+    using FirebaseNet.Auth;
     using System;
     using System.Net.Http;
 
@@ -24,10 +25,21 @@ namespace FirebaseNet.Database
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FirebaseDB"/> class with base url of Firebase Database
+        /// </summary>
+        /// <param name="baseURL">Firebase Database URL</param>
+        /// <param name="pathToJSONKey">Path To your JSON Key</param>
+        public FirebaseDB(string baseURL, string pathToJSONKey, params string[] scopes)
+        {
+            this.RootNode = baseURL;
+            AuthHelper.GenenateAccessToken(pathToJSONKey, scopes);
+        }
+
+        /// <summary>
         /// Gets or sets Represents current full path of a Firebase Database resource
         /// </summary>
         private string RootNode { get; set; }
-        
+
         /// <summary>
         /// Adds more node to base URL
         /// </summary>

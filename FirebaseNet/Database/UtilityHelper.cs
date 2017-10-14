@@ -11,6 +11,7 @@ namespace FirebaseNet.Database
     using System.Text;
     using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
+    using FirebaseNet.Auth;
 
     /// <summary>
     /// Utility Helper Class
@@ -20,7 +21,7 @@ namespace FirebaseNet.Database
         /// <summary>
         /// User Agent Header in HTTP Request
         /// </summary>
-        private const string USER_AGENT = "firebase-net/1.0";
+        private const string USER_AGENT = "firebase-net/0.2";
 
         /// <summary>
         /// Validates a URI
@@ -78,6 +79,9 @@ namespace FirebaseNet.Database
         /// <returns>HTTP Responce as Task</returns>
         public static Task<HttpResponseMessage> RequestHelper(HttpMethod method, Uri uri, string json = null)
         {
+            if (!string.IsNullOrEmpty(AuthHelper.ACCESS_TOKEN))
+                uri = new Uri($"{uri}?access_token={AuthHelper.ACCESS_TOKEN}");
+
             var client = new HttpClient();
             var msg = new HttpRequestMessage(method, uri);
             msg.Headers.Add("user-agent", USER_AGENT);
