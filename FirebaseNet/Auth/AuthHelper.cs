@@ -32,7 +32,7 @@ namespace FirebaseNet.Auth
             AuthHelper.jsonKeyFilePath = jsonKeyFilePath;
 
             if (scopes.Length == 0)
-                AuthHelper.scopes = new string[] { "https://www.googleapis.com/auth/firebase.database", "https://www.googleapis.com/auth/userinfo.email" };
+                AuthHelper.scopes = new string[] { "https://www.googleapis.com/auth/firebase", "https://www.googleapis.com/auth/userinfo.email" };
             else
                 AuthHelper.scopes = scopes;
 

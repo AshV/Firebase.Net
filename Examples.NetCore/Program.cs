@@ -20,7 +20,7 @@ namespace Examples.NetCore
         public static void Main()
         {
             // Instanciating with base URL
-            FirebaseDB firebaseDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com","Key.json");
+            FirebaseDB firebaseDB = new FirebaseDB("https://c-sharpcorner-2d7ae.firebaseio.com");
 
             // Referring to Node with name "Teams"
             FirebaseDB firebaseDBTeams = firebaseDB.Node("Teams");
