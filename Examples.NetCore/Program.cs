@@ -7,6 +7,7 @@
 namespace Examples.NetCore
 {
     using FirebaseNet.Database;
+    using FirebaseNet.RealTimeDB;
     using static System.Console;
 
     /// <summary>
@@ -47,8 +48,8 @@ namespace Examples.NetCore
             WriteLine("GET Request");
             FirebaseResponse getResponse = firebaseDBTeams.Get();
             WriteLine(getResponse.Success);
-            if(getResponse.Success)
-            WriteLine(getResponse.JSONContent);
+            if (getResponse.Success)
+                WriteLine(getResponse.JSONContent);
             WriteLine();
 
             WriteLine("PUT Request");
@@ -69,13 +70,35 @@ namespace Examples.NetCore
             WriteLine(patchResponse.Success);
             WriteLine();
 
-            WriteLine("DELETE Request");
-            FirebaseResponse deleteResponse = firebaseDBTeams.Delete();
-            WriteLine(deleteResponse.Success);
-            WriteLine();
+            //WriteLine("DELETE Request");
+            //FirebaseResponse deleteResponse = firebaseDBTeams.Delete();
+            //WriteLine(deleteResponse.Success);
+            //WriteLine();
 
-            WriteLine(firebaseDBTeams.ToString());
+            WriteLine(firebaseDBTeams);
+            ReadLine();
+
+            new Program().SocketWala(firebaseDBTeams.ToString());
+
             ReadLine();
         }
+
+        public void SocketWala(string uri)
+        {
+            var socket = new EventSource(uri);
+            socket = new EventSource("SERVER_URL");
+            socket.StateChange += StateChange;
+            socket.Error += Error;
+            socket.Message += Message;
+        }
+
+        private void StateChange(object sender, EventSource.StateChangeEventArgs e)
+               => WriteLine("StateChange : " + e.ToString());
+
+        private void Error(object sender, EventSource.ServerSentErrorEventArgs e)
+            => WriteLine("Error : " + e.Exception.ToString());
+
+        private void Message(object sender, EventSource.ServerSentEventArgs e)
+            => WriteLine("Message : " + e.Data);
     }
 }
