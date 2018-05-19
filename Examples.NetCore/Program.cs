@@ -76,9 +76,9 @@ namespace Examples.NetCore
             //WriteLine();
 
             WriteLine(firebaseDBTeams);
-            ReadLine();
+        
 
-            new Program().SocketWala(firebaseDBTeams.ToString());
+            new Program().SocketWala(firebaseDBTeams.ToString()+"/.json");
 
             ReadLine();
         }
@@ -86,7 +86,7 @@ namespace Examples.NetCore
         public void SocketWala(string uri)
         {
             var socket = new EventSource(uri);
-            socket = new EventSource("SERVER_URL");
+            socket.Connect();
             socket.StateChange += StateChange;
             socket.Error += Error;
             socket.Message += Message;
