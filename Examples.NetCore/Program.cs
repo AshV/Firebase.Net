@@ -8,6 +8,7 @@ namespace Examples.NetCore
 {
     using FirebaseNet.Database;
     using FirebaseNet.RealTimeDB;
+    using static FirebaseNet.RealTimeDB.EventSource;
     using static System.Console;
 
     /// <summary>
@@ -76,9 +77,9 @@ namespace Examples.NetCore
             //WriteLine();
 
             WriteLine(firebaseDBTeams);
-        
 
-            new Program().SocketWala(firebaseDBTeams.ToString()+"/.json");
+
+            new Program().SocketWala(firebaseDBTeams.ToString() + "/.json");
 
             ReadLine();
         }
@@ -90,15 +91,19 @@ namespace Examples.NetCore
             socket.StateChange += StateChange;
             socket.Error += Error;
             socket.Message += Message;
+            socket.OnUpdate += Update;
         }
 
-        private void StateChange(object sender, EventSource.StateChangeEventArgs e)
+        private void StateChange(object sender, StateChangeEventArgs e)
                => WriteLine("StateChange : " + e.ToString());
 
-        private void Error(object sender, EventSource.ServerSentErrorEventArgs e)
+        private void Error(object sender, ServerSentErrorEventArgs e)
             => WriteLine("Error : " + e.Exception.ToString());
 
-        private void Message(object sender, EventSource.ServerSentEventArgs e)
-            => WriteLine("Message : " + e.Data);
+        private void Message(object sender, ServerSentEventArgs e)
+            => WriteLine("Message : " + e.EventType + " | " + e.Data);
+
+        private void Update(object sender, OnUpdateEventArgs e)
+            => WriteLine("Message : " + e.EventType + " | " + e.Data);
     }
 }

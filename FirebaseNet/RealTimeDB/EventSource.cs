@@ -81,6 +81,11 @@ namespace FirebaseNet.RealTimeDB
         public event EventHandler<ServerSentEventArgs> Message;
 
         /// <summary>
+        /// Occurs when a message is available.
+        /// </summary>
+        public event EventHandler<OnUpdateEventArgs> OnUpdate;
+
+        /// <summary>
         /// Occurs when the ready state changes.
         /// </summary>
         public event EventHandler<StateChangeEventArgs> StateChange;
@@ -252,12 +257,22 @@ namespace FirebaseNet.RealTimeDB
 
             if (sb == null || _shutdownToken) return;
 
-            OnMessageEvent(new ServerSentEventArgs
+            if (_eventType == "put")
             {
-                EventId = _eventId,
-                EventType = _eventType,
-                Data = sb.ToString()
-            });
+                OnUpdateEvent(new OnUpdateEventArgs
+                {
+                    EventId = _eventId,
+                    EventType = _eventType,
+                    Data = sb.ToString()
+                });
+            }
+            else
+                OnMessageEvent(new ServerSentEventArgs
+                {
+                    EventId = _eventId,
+                    EventType = _eventType,
+                    Data = sb.ToString()
+                });
         }
 
         /// <summary>
@@ -294,6 +309,20 @@ namespace FirebaseNet.RealTimeDB
         {
             Trace.TraceInformation("Raising OnMessageEvent ({0})", _eventType);
             var handler = Message;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:MessageEvent" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ServerSentEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnUpdateEvent(OnUpdateEventArgs e)
+        {
+            Trace.TraceInformation("Raising OnMessageEvent ({0})", _eventType);
+            var handler = OnUpdate;
             if (handler != null)
             {
                 handler(this, e);
@@ -522,6 +551,31 @@ namespace FirebaseNet.RealTimeDB
         /// Server Sent Event Message Object
         /// </summary>
         public sealed class ServerSentEventArgs : EventArgs
+        {
+            #region Public Properties
+
+            /// <summary>
+            /// Gets the data.
+            /// </summary>
+            public string Data { get; internal set; }
+
+            /// <summary>
+            /// Gets the event identifier.
+            /// </summary>
+            public string EventId { get; internal set; }
+
+            /// <summary>
+            /// Gets the type of the event.
+            /// </summary>
+            public string EventType { get; internal set; }
+
+            #endregion Public Properties
+        }
+
+        /// <summary>
+        /// Server Sent Event Message Object
+        /// </summary>
+        public sealed class OnUpdateEventArgs : EventArgs
         {
             #region Public Properties
 
