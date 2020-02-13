@@ -266,6 +266,10 @@ namespace FirebaseNet.RealTimeDB
                     Data = sb.ToString()
                 });
             }
+            else if (_eventType == "patch")
+            {
+
+            }
             else
                 OnMessageEvent(new ServerSentEventArgs
                 {

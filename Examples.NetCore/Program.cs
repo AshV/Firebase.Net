@@ -86,12 +86,12 @@ namespace Examples.NetCore
 
         public void SocketWala(string uri)
         {
-            var socket = new EventSource(uri);
-            socket.Connect();
-            socket.StateChange += StateChange;
-            socket.Error += Error;
-            socket.Message += Message;
-            socket.OnUpdate += Update;
+            var sse = new EventSource(uri);
+            sse.Connect();
+            sse.StateChange += StateChange;
+            sse.Error += Error;
+            sse.Message += Message;
+            sse.OnUpdate += Update;
         }
 
         private void StateChange(object sender, StateChangeEventArgs e)
